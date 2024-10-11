@@ -1,5 +1,6 @@
 class Game {
   operators: Array<keyof typeof this.operatorsActions> = ["+", "-"];
+  difficulty = 2;
 
   operatorsActions = {
     "+": (a: number, b: number) => {
@@ -23,11 +24,12 @@ class Game {
     },
   } as const;
 
-  createExample(complexity: number) {
+  createExample() {
     let res = 0;
-    const exampal: Array<keyof typeof this.operatorsActions | number | "="> = [];
+    const exampal: Array<keyof typeof this.operatorsActions | number | "="> =
+      [];
 
-    for (let i = 1; i <= complexity; i++) {
+    for (let i = 1; i <= this.difficulty; i++) {
       if (i === 1) {
         res = Math.round(Math.random() * 100);
         exampal.push(res);
@@ -47,15 +49,20 @@ class Game {
       }
     }
 
-    exampal.push("=")
-    exampal.push(res)
+    exampal.push("=");
+    exampal.push(res);
 
-    return exampal
+    return exampal;
   }
 
-  addOperator(operator: keyof typeof this.operatorsActions){
-    this.operators.push(operator)
+  addOperator(operator: keyof typeof this.operatorsActions) {
+    this.operators.push(operator);
   }
 
-  
+  setDifficulty(complexity: number) {
+    if (complexity < 2) {
+      return;
+    }
+    this.difficulty = complexity;
+  }
 }
