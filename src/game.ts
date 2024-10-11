@@ -1,4 +1,4 @@
-class Game {
+export class Game {
   operators: Array<keyof typeof this.operatorsActions> = ["+", "-"];
   difficulty = 2;
 
@@ -66,3 +66,29 @@ class Game {
     this.difficulty = complexity;
   }
 }
+
+type Actions = {
+  "+": (a: number, b: number) => number;
+  "-": (a: number, b: number) => number;
+  "*": (a: number, b: number) => number;
+  "/": (a: number, b: number) => number;
+  "^^": (a: number, b: number) => number;
+};
+
+export interface Game {
+  operatorActions: Actions;
+  operators: ("+" | "-" | "*" | "/" | "^^")[];
+  createExample: () => (number | "+" | "-" | "*" | "/" | "^^" | "=")[];
+  addOperator: (operator: "+" | "-" | "*" | "/" | "^^") => void;
+  setDifficulty: (complexity: number) => void;
+}
+
+declare global {
+    interface Window {
+      game: Game
+    }
+  }
+
+window.game = new Game()
+
+
