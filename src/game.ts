@@ -26,33 +26,33 @@ export class Game {
 
   createExample() {
     let res = 0;
-    const exampal: Array<keyof typeof this.operatorsActions | number | "="> =
-      [];
+    const exemple: Array<keyof typeof this.operatorsActions | number> = [];
 
-    for (let i = 1; i <= this.difficulty; i++) {
-      if (i === 1) {
+    for (let i = 0; i <= this.difficulty; i++) {
+      if (i === 0) {
         res = Math.round(Math.random() * 100);
-        exampal.push(res);
+        exemple.push(res);
+        continue;
       }
 
-      if (i % 2 !== 0) {
-        exampal.push(Math.round(Math.random() * 100));
-        const key = exampal[i - 1];
-        if (typeof key === "string" && key !== "=") {
-          res = this.operatorsActions[key](res, exampal[i] as number);
+      if (i % 2 === 0) {
+        exemple.push(Math.round(Math.random() * 100));
+        const key = exemple[i - 1];
+        if (typeof key === "string") {
+          res = this.operatorsActions[key](res, exemple[i] as number);
+          continue;
         }
+        
       } else {
         const operatorIdx = Math.round(
           Math.random() * this.operators.length - 1
         );
-        exampal.push(this.operators[operatorIdx]);
+        exemple.push(this.operators[operatorIdx]);
+        continue;
       }
     }
 
-    exampal.push("=");
-    exampal.push(res);
-
-    return exampal;
+    return { exemple: exemple, result: res };
   }
 
   addOperator(operator: keyof typeof this.operatorsActions) {
@@ -78,17 +78,10 @@ type Actions = {
 export interface Game {
   operatorActions: Actions;
   operators: ("+" | "-" | "*" | "/" | "^^")[];
-  createExample: () => (number | "+" | "-" | "*" | "/" | "^^" | "=")[];
+  createExample: () => {
+    exemple: (number | "+" | "-" | "*" | "/" | "^^")[];
+    result: number;
+  };
   addOperator: (operator: "+" | "-" | "*" | "/" | "^^") => void;
   setDifficulty: (complexity: number) => void;
 }
-
-declare global {
-    interface Window {
-      game: Game
-    }
-  }
-
-window.game = new Game()
-
-

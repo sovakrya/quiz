@@ -1,0 +1,28 @@
+.game-main-box {
+    display: flex;
+    flex-direction: column;
+    gap: 224px;
+    padding: 0px 48px;
+    height: 800px;
+}
+
+.header-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-btn {
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+.game-content-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
