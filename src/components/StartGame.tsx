@@ -1,5 +1,6 @@
 import { useState } from "react"
 import SetingsGame from "./SetingsGame"
+import "../styles/StartGame.css"
 
 export default function StartGame (){
     const [date, setDate] = useState(null)
@@ -8,7 +9,7 @@ export default function StartGame (){
     
    
     return(
-        <div>
+        <div className="start-main-box">
           <h2>Статистика:</h2>
         <span>{date} {countTask}/10</span>
 
