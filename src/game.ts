@@ -52,4 +52,10 @@ class Game {
 
     return exampal
   }
+
+  addOperator(operator: keyof typeof this.operatorsActions){
+    this.operators.push(operator)
+  }
+
+  
 }
