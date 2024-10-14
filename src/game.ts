@@ -1,8 +1,21 @@
+type Sign = {
+  operator: "+" | "-" | "*" | "/" | "^^";
+  leftNumber: number;
+  rightNumber: number;
+  priority: number;
+};
+
 export class Game {
-  operators: Array<keyof typeof this.operatorsActions> = ["+", "-"];
-  difficulty = 2;
-  signs: Array<keyof typeof this.operatorsActions> = [];
-  nums: number[] = [];
+  operators: Array<keyof typeof this.operatorsActions> = [
+    "+",
+    "-",
+    "*",
+    "/",
+    "^^",
+  ];
+  difficulty = 4;
+  example: Array<keyof typeof this.operatorsActions | number> = [];
+  signs: Sign[] = [];
 
   operatorsActions = {
     "+": (a: number, b: number) => {
@@ -26,70 +39,78 @@ export class Game {
     },
   } as const;
 
-  countExample() {
+  countExample(example: Array<keyof typeof this.operatorsActions | number>) {
     let res = 0;
-    const example: Array<keyof typeof this.operatorActions | number> = [];
+    const signs: Sign[] = [];
 
-    for (let i = 0; i <= this.difficulty; i++) {
-      if (i === 0) {
-        res = this.nums[i];
-        example.push(res);
-        continue;
-      }
-
+    for (let i = 0; i < example.length; i++) {
       if (i % 2 !== 0) {
-        const signIdx = this.signs.findIndex(
-          (val) => val === "*" || "/" || "^^"
-        );
-
-        if (signIdx >= 0) {
-          example.push(this.signs[signIdx]);
-          const key = this.signs[signIdx];
-          res = this.operatorsActions[key](res, this.nums[i]);
-          this.signs.splice(signIdx, 1);
-          continue;
-        } else {
-          const idx = this.signs.findIndex((val) => val === "-" || "+");
-          if (idx >= 0) {
-            example.push(this.signs[idx]);
-            const key = this.signs[signIdx];
-            res = this.operatorsActions[key](res, this.nums[i]);
-            this.signs.splice(idx, 1);
-            continue;
-          }
+        let priority = 0;
+        if (example[i] === "*" || example[i] === "/") {
+          priority = 1;
+        } else if (example[i] === "^^") {
+          priority = 2;
         }
-      } else {
-        example.push(this.nums[i - 1]);
-        continue;
+
+        signs.push({
+          operator: example[i] as keyof typeof this.operatorsActions,
+          leftNumber: example[i - 1] as number,
+          rightNumber: example[i + 1] as number,
+          priority,
+        });
       }
+    }
+
+    const sortSigns = signs.sort((a, b) => b.priority - a.priority);
+    for(let sign of sortSigns){
+      const leftNumber = sign.leftNumber
+      const rightNumber = sign.rightNumber
+      const operator = sign.operator
+      console.log(leftNumber)
+      console.log(operator)
+      console.log(rightNumber)
+      if(sortSigns.findIndex((a) => a === sign) === 0){
+        res = this.operatorsActions[operator](leftNumber, rightNumber)
+        continue
+      }
+      console.log(res)
+
+      res = this.operatorsActions[operator](res, rightNumber)
+      
     }
 
     return { example: example, result: res };
   }
 
   createExample() {
-    for (let i = 0; i <= this.difficulty; i++) {
+    const example: Array<keyof typeof this.operatorsActions | number> = [];
+    for (let i = 0; i < this.difficulty * 2 - 1; i++) {
       if (i === 0) {
-        this.nums.push(Math.round(Math.random() * 100));
+        const num = Math.round(Math.random() * 10);
+        example.push(num);
         continue;
       }
 
       if (i % 2 === 0) {
-        this.nums.push(Math.round(Math.random() * 100));
+        const num = Math.round(Math.random() * 10);
+        example.push(num);
         continue;
       } else {
-        let operatorIdx = Math.round(Math.random() * this.operators.length - 1);
-        if (operatorIdx < 0) {
-          operatorIdx = Math.round(Math.random() * this.operators.length - 1);
-        }
-        this.signs.push(this.operators[operatorIdx]);
+
+        const operatorIdx = Math.round(
+          Math.random() * (this.operators.length - 1)
+        );
+        example.push(this.operators[operatorIdx]);
         continue;
       }
     }
+
+    return example;
   }
 
   addOperator(operator: keyof typeof this.operatorsActions) {
     this.operators.push(operator);
+    console.log(`added operator: ${operator}`);
   }
 
   setDifficulty(complexity: number) {
@@ -115,8 +136,8 @@ type Actions = {
 export interface Game {
   operatorActions: Actions;
   operators: ("+" | "-" | "*" | "/" | "^^")[];
-  createExample: () => void;
-  countExample: () => {
+  createExample: () => Array<("+" | "-" | "*" | "/" | "^^") | number>;
+  countExample: (example: Array<("+" | "-" | "*" | "/" | "^^") | number>) => {
     example: Array<("+" | "-" | "*" | "/" | "^^") | number>;
     result: number;
   };
