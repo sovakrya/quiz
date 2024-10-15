@@ -1,49 +1,41 @@
 export class Game {
-  operators: string[] = ["+", "-", "*", "/", "**"];
-  difficulty = 4;
+  gameStorage = window.localStorage;
+  operators: string[];
+  difficulty;
+  currentTask;
+  date;
+
+  constructor() {
+    const storageOperators = this.gameStorage.getItem("operators");
+    const storageDifficulty = this.gameStorage.getItem("difficulty");
+    const storageCurrentTask = this.gameStorage.getItem("currentTask");
+    const storageDate = this.gameStorage.getItem("currentDate");
+    if (storageOperators) {
+      this.operators = JSON.parse(storageOperators);
+    } else {
+      this.operators = ["+", "-"];
+    }
+
+    if (storageDifficulty) {
+      this.difficulty = JSON.parse(storageDifficulty);
+    } else {
+      this.difficulty = 2;
+    }
+
+    if (storageCurrentTask) {
+      this.currentTask = JSON.parse(storageCurrentTask);
+    } else {
+      this.currentTask = 0;
+    }
+
+    if (storageDate) {
+      this.date = JSON.parse(storageDate);
+    } else {
+      this.date = null;
+    }
+  }
 
   countExample(example: Array<"+" | "-" | "*" | "/" | "**" | number>) {
-    // let res = 0;
-    // const signs: Sign[] = [];
-
-    // for (let i = 0; i < example.length; i++) {
-    //   if (i % 2 !== 0) {
-    //     let priority = 0;
-    //     if (example[i] === "*" || example[i] === "/") {
-    //       priority = 1;
-    //     } else if (example[i] === "^^") {
-    //       priority = 2;
-    //     }
-
-    //     signs.push({
-    //       operator: example[i] as keyof typeof this.operatorsActions,
-    //       leftNumber: example[i - 1] as number,
-    //       rightNumber: example[i + 1] as number,
-    //       priority,
-    //     });
-    //   }
-    // }
-
-    // const sortSigns = signs.sort((a, b) => b.priority - a.priority);
-    // for(let sign of sortSigns){
-    //   const leftNumber = sign.leftNumber
-    //   const rightNumber = sign.rightNumber
-    //   const operator = sign.operator
-    //   console.log(leftNumber)
-    //   console.log(operator)
-    //   console.log(rightNumber)
-    //   if(sortSigns.findIndex((a) => a === sign) === 0){
-    //     res = this.operatorsActions[operator](leftNumber, rightNumber)
-    //     continue
-    //   }
-    //   console.log(res)
-
-    //   res = this.operatorsActions[operator](res, rightNumber)
-
-    // }
-
-    // return { example: example, result: res };
-
     const res = Number(eval(example.join("")));
     return res;
   }
@@ -74,12 +66,16 @@ export class Game {
       }
     }
 
+    this.gameStorage.setItem("currentTask", JSON.stringify(this.currentTask + 1));
+    this.currentTask += 1;
+
     return example;
   }
 
   addOperator(operator: "+" | "-" | "*" | "/" | "**") {
     this.operators.push(operator);
-    console.log(`added operator: ${operator}`);
+    this.gameStorage.setItem("operators", operator);
+    alert(`added operator: ${operator}`);
   }
 
   setDifficulty(complexity: number) {
@@ -91,6 +87,11 @@ export class Game {
       return;
     }
     this.difficulty = complexity;
+    this.gameStorage.setItem("difficulty", JSON.stringify(this.difficulty));
+  }
+
+  saveDate() {
+    this.gameStorage.setItem("currentDate", JSON.stringify(new Date()));
   }
 }
 

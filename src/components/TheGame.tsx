@@ -2,12 +2,14 @@ import { useRef, useState } from "react";
 import "../styles/TheGame.css";
 import { useNavigate } from "react-router-dom";
 
+let example = window.game.createExample();
+let result = window.game.countExample(example);
 export default function TheGame() {
-  let example = window.game.createExample();
-  let result = window.game.countExample(example);
   const [exampleDone, setExampleDone] = useState(false);
   const [exampleCorrect, setExampleCorrect] = useState(false);
-  const [countTask, setCountTask] = useState(1);
+  const [countTask, setCountTask] = useState(
+    Number(window.game.gameStorage.getItem("currentTask"))
+  );
   const exampleElements = useRef<HTMLDivElement | null>(null);
 
   const navigate = useNavigate();
@@ -19,12 +21,10 @@ export default function TheGame() {
   function checkResult() {
     const userExample: Array<number | string> = [];
     const elements = exampleElements.current?.children;
-    if (!elements) {
-      return;
-    }
-    const example: Element[] = Array.from(elements);
 
-    example.map((elem, idx) => {
+    const currentExample: Element[] = Array.from(elements!);
+
+    currentExample.forEach((elem, idx) => {
       if (elem instanceof HTMLInputElement) {
         if (isNaN(Number(elem.value))) {
           alert(
@@ -32,9 +32,9 @@ export default function TheGame() {
               idx + 1
             }! You can only enter numbers`
           );
+        } else {
+          userExample.push(Number(elem.value));
         }
-
-        userExample.push(Number(elem.value));
       }
 
       if (elem instanceof HTMLSpanElement) {
@@ -51,7 +51,7 @@ export default function TheGame() {
       setExampleCorrect(false);
     }
 
-    example.map((val) => {
+    currentExample.forEach((val) => {
       if (val instanceof HTMLInputElement) {
         val.value = "";
       }
@@ -63,7 +63,8 @@ export default function TheGame() {
     result = window.game.countExample(example);
 
     setExampleDone(false);
-    setCountTask(countTask + 1);
+    window.game.gameStorage.setItem("currentTask", `${countTask + 1}`);
+    setCountTask((countTask) => countTask + 1);
   }
 
   return (
@@ -95,17 +96,15 @@ export default function TheGame() {
             <span>{result}</span>
           </div>
         </div>
-
-        <button onClick={checkResult}>Ответить</button>
-        {exampleDone ? (
-          <button onClick={createNewTask}>Следующий</button>
+        {!exampleDone ? (
+          <button onClick={checkResult}>Ответить</button>
         ) : (
-          <></>
+          <button onClick={createNewTask}>Следующий</button>
         )}
         {exampleDone ? (
           <div>
             {exampleCorrect ? <span>Правильно</span> : <span>Неправильно</span>}
-            <div>
+            <div className="example-">
               <span>{"Можно так:"}</span>
               <span>{example}</span>
               <span>{`= ${result}`}</span>
