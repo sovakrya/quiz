@@ -32,13 +32,13 @@ export default function SetingsGame() {
           <div className="sign-content-box">
             <span className="setings-sign">*</span>
             <span className="setings-sign">/</span>
-            <span className="setings-sign">^^</span>
+            <span className="setings-sign">**</span>
           </div>
 
           <div className="sign-content-box">
             <button className="sign-btn" onClick={() => window.game.addOperator("*")}>✔</button>
             <button className="sign-btn" onClick={() => window.game.addOperator("/")}>✔</button>
-            <button className="sign-btn" onClick={() => window.game.addOperator("^^")}>✔</button>
+            <button className="sign-btn" onClick={() => window.game.addOperator("**")}>✔</button>
           </div>
         </div>
       </div>

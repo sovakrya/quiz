@@ -1,13 +1,14 @@
 import "../styles/TheGame.css";
 
 export default function TheGame() {
-  const example = window.game.createExample()
-  const newExemple = window.game.countExample(example)
+  const example = window.game.createExample();
+  const result = window.game.countExample(example);
 
   function a() {
-    console.log(newExemple.example);
+    console.log(example);
+    console.log(result);
 
-    newExemple.example.map((val) => console.log(val));
+    example.map((val) => console.log(val));
   }
 
   return (
@@ -20,7 +21,7 @@ export default function TheGame() {
 
       <div className="game-content-box">
         <div>
-          {newExemple.example.map((val) => {
+          {example.map((val) => {
             if (typeof val === "number") {
               return <input type="number" />;
             }
@@ -30,7 +31,7 @@ export default function TheGame() {
             }
           })}
 
-          <span>{`= ${newExemple.result}`}</span>
+          <span>{`= ${result}`}</span>
         </div>
         <button>Ответить</button>
         <span>Правильно/Неправильно</span>
