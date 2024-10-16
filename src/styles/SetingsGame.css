@@ -68,3 +68,15 @@
   display: flex;
   gap: 12px;
 }
+
+.onscreen-keyboard-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.onscreen-keyboard-btn-box {
+  display: flex;
+  gap: 4px;
+}

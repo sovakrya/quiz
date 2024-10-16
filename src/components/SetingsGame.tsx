@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "../styles/SetingsGame.css";
-import { Game } from "../game";
 
 
 export default function SetingsGame() {

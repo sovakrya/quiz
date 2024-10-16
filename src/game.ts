@@ -1,16 +1,18 @@
+
+
 export class Game {
   gameStorage = window.localStorage;
   operators: ("+" | "-" | "*" | "/" | "**")[] = ["+", "-"];
   difficulty: number;
   currentTask: number;
   date: null | string;
-  timer: number;
+  timer = 3600000
+
 
   constructor() {
     const storageDifficulty = this.gameStorage.getItem("difficulty");
     const storageCurrentTask = this.gameStorage.getItem("currentTask");
     const storageDate = this.gameStorage.getItem("date");
-    const storageTimer = this.gameStorage.getItem("time");
 
     if (storageDifficulty) {
       try {
@@ -40,16 +42,6 @@ export class Game {
       }
     } else {
       this.date = null;
-    }
-
-    if (storageTimer) {
-      try {
-        this.timer = JSON.parse(storageTimer);
-      } catch {
-        this.timer = 3600000;
-      }
-    } else {
-      this.timer = 3600000;
     }
   }
 
@@ -129,8 +121,8 @@ export class Game {
   restartGame() {
     this.operators = ["+", "-"];
     this.difficulty = 2;
-    this.currentTask = 0; 
-    this.timer = 3600000;
+    this.currentTask = 0;
+    this.timer = 3600000
     this.gameStorage.setItem("operators", JSON.stringify(this.operators));
     this.gameStorage.setItem("difficulty", JSON.stringify(this.difficulty));
     this.gameStorage.setItem("currentTask", JSON.stringify(this.currentTask));
