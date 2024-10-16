@@ -10,7 +10,7 @@ declare global {
 window.game = new Game();
 
 export default function SetingsGame() {
-  const [complexity, setComplexity] = useState(2);
+  const [complexity, setComplexity] = useState(window.game.difficulty);
   const [isChangeDifficulty, setIsChangeDifficulty] = useState(false);
 
   function changeDifficulty() {

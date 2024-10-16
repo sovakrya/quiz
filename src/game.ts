@@ -1,37 +1,34 @@
+import { json } from "stream/consumers";
+
 export class Game {
   gameStorage = window.localStorage;
-  operators: string[];
-  difficulty;
-  currentTask;
-  date;
+  operators: ("+" | "-" | "*" | "/" | "**")[] = ["+", "-"];
+  difficulty: number;
+  currentTask: number;
+  date: null | string = null;
 
   constructor() {
-    const storageOperators = this.gameStorage.getItem("operators");
     const storageDifficulty = this.gameStorage.getItem("difficulty");
     const storageCurrentTask = this.gameStorage.getItem("currentTask");
-    const storageDate = this.gameStorage.getItem("currentDate");
-    if (storageOperators) {
-      this.operators = JSON.parse(storageOperators);
-    } else {
-      this.operators = ["+", "-"];
-    }
 
     if (storageDifficulty) {
-      this.difficulty = JSON.parse(storageDifficulty);
+      try {
+        this.difficulty = JSON.parse(storageDifficulty);
+      } catch {
+        this.difficulty = 2;
+      }
     } else {
       this.difficulty = 2;
     }
 
     if (storageCurrentTask) {
-      this.currentTask = JSON.parse(storageCurrentTask);
+      try {
+        this.currentTask = JSON.parse(storageCurrentTask);
+      } catch {
+        this.currentTask = 0;
+      }
     } else {
       this.currentTask = 0;
-    }
-
-    if (storageDate) {
-      this.date = JSON.parse(storageDate);
-    } else {
-      this.date = null;
     }
   }
 
@@ -66,15 +63,20 @@ export class Game {
       }
     }
 
-    this.gameStorage.setItem("currentTask", JSON.stringify(this.currentTask + 1));
-    this.currentTask += 1;
-
     return example;
+  }
+
+  incrementCurrentTask() {
+    this.gameStorage.setItem(
+      "currentTask",
+      JSON.stringify(this.currentTask + 1)
+    );
+    this.currentTask += 1;
   }
 
   addOperator(operator: "+" | "-" | "*" | "/" | "**") {
     this.operators.push(operator);
-    this.gameStorage.setItem("operators", operator);
+    this.gameStorage.setItem("operators", JSON.stringify(operator));
     alert(`added operator: ${operator}`);
   }
 
@@ -91,12 +93,25 @@ export class Game {
   }
 
   saveDate() {
-    this.gameStorage.setItem("currentDate", JSON.stringify(new Date()));
+    this.date = new Date().toLocaleDateString("es-CL");
+    this.gameStorage.setItem(
+      "currentDate",
+      JSON.stringify(new Date().toLocaleDateString("es-CL"))
+    );
+  }
+
+  restartGame() {
+    this.operators = ["+", "-"];
+    this.difficulty = 2;
+    this.currentTask = 0;
+    this.gameStorage.setItem("operators", JSON.stringify(this.operators));
+    this.gameStorage.setItem("difficulty", JSON.stringify(this.difficulty));
+    this.gameStorage.setItem("currentTask", JSON.stringify(this.currentTask));
   }
 }
 
 export interface Game {
-  operators: string[];
+  operators: ("+" | "-" | "*" | "/" | "**")[];
   createExample: () => Array<"+" | "-" | "*" | "/" | "**" | number>;
   countExample: (
     example: Array<"+" | "-" | "*" | "/" | "**" | number>

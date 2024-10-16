@@ -7,24 +7,23 @@ let result = window.game.countExample(example);
 export default function TheGame() {
   const [exampleDone, setExampleDone] = useState(false);
   const [exampleCorrect, setExampleCorrect] = useState(false);
-  const [countTask, setCountTask] = useState(
-    Number(window.game.gameStorage.getItem("currentTask"))
-  );
+  const [countTask, setCountTask] = useState(window.game.currentTask);
   const exampleElements = useRef<HTMLDivElement | null>(null);
+  const [exampleState, setExampleState] = useState(example);
 
   const navigate = useNavigate();
 
   function goBack() {
+    window.game.saveDate();
     navigate("/");
   }
 
   function checkResult() {
-    const userExample: Array<number | string> = [];
     const elements = exampleElements.current?.children;
 
     const currentExample: Element[] = Array.from(elements!);
 
-    currentExample.forEach((elem, idx) => {
+    const userExample = currentExample.map((elem, idx) => {
       if (elem instanceof HTMLInputElement) {
         if (isNaN(Number(elem.value))) {
           alert(
@@ -33,12 +32,12 @@ export default function TheGame() {
             }! You can only enter numbers`
           );
         } else {
-          userExample.push(Number(elem.value));
+          return Number(elem.value);
         }
       }
 
       if (elem instanceof HTMLSpanElement) {
-        userExample.push(elem.textContent!);
+        return elem.textContent!;
       }
     });
 
@@ -56,15 +55,28 @@ export default function TheGame() {
         val.value = "";
       }
     });
+
+    window.game.saveDate();
+  }
+
+  function completedGame(){
+    alert("you completed the game!")
+    window.game.saveDate();
+    navigate("/");
   }
 
   function createNewTask() {
     example = window.game.createExample();
     result = window.game.countExample(example);
-
-    setExampleDone(false);
-    window.game.gameStorage.setItem("currentTask", `${countTask + 1}`);
+    if(countTask >= 10){
+      alert("you completed the game!")
+      window.game.saveDate();
+      navigate("/");
+    }
+    window.game.incrementCurrentTask();
     setCountTask((countTask) => countTask + 1);
+    setExampleState(example);
+    setExampleDone(false);
   }
 
   return (
@@ -80,7 +92,7 @@ export default function TheGame() {
       <div className="game-content-box">
         <div className="example-box">
           <div className="example-wrapper" ref={exampleElements}>
-            {example.map((val) => {
+            {exampleState.map((val) => {
               if (typeof val === "number") {
                 return <input type="number" className="example-input" />;
               }
@@ -106,7 +118,7 @@ export default function TheGame() {
             {exampleCorrect ? <span>Правильно</span> : <span>Неправильно</span>}
             <div className="example-">
               <span>{"Можно так:"}</span>
-              <span>{example}</span>
+              <span>{exampleState}</span>
               <span>{`= ${result}`}</span>
             </div>
           </div>

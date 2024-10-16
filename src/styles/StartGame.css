@@ -4,3 +4,8 @@
     gap: 24px;
     align-items: center;
 }
+
+.statistics-box{
+    display: flex;
+    gap: 14px;
+}
