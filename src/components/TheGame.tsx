@@ -1,15 +1,40 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../styles/TheGame.css";
 import { useNavigate } from "react-router-dom";
+import { Game } from "../game";
+
+declare global {
+  interface Window {
+    game: Game;
+  }
+}
+
+window.game = new Game();
 
 let example = window.game.createExample();
 let result = window.game.countExample(example);
+
 export default function TheGame() {
   const [exampleDone, setExampleDone] = useState(false);
   const [exampleCorrect, setExampleCorrect] = useState(false);
   const [countTask, setCountTask] = useState(window.game.currentTask);
-  const exampleElements = useRef<HTMLDivElement | null>(null);
   const [exampleState, setExampleState] = useState(example);
+  const [timerState, setTimerState] = useState(window.game.timer);
+  const exampleElements = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (timerState >= 0) {
+      setTimeout(() => {
+        setTimerState((timerState) => timerState - 1000);
+        window.game.saveTimer(timerState);
+      }, 1000);
+    }
+
+    if(timerState <= 0){
+      window.game.restartGame()
+      alert("time is up!")
+    }
+  }, [timerState]);
 
   const navigate = useNavigate();
 
@@ -59,29 +84,34 @@ export default function TheGame() {
     window.game.saveDate();
   }
 
-  function completedGame(){
-    alert("you completed the game!")
+  function completedGame() {
+    alert("you completed the game!");
     window.game.saveDate();
-    navigate("/");
+    window.game.restartGame();
+     navigate("/")
   }
 
   function createNewTask() {
     example = window.game.createExample();
     result = window.game.countExample(example);
-    if(countTask >= 10){
-      alert("you completed the game!")
-      window.game.saveDate();
-      navigate("/");
+    if (countTask >= 10) {
+      completedGame();
+    } else {
+      window.game.incrementCurrentTask();
+      setCountTask((countTask) => countTask + 1);
+      setExampleState(example);
+      setExampleDone(false);
     }
-    window.game.incrementCurrentTask();
-    setCountTask((countTask) => countTask + 1);
-    setExampleState(example);
-    setExampleDone(false);
   }
+  
 
   return (
     <div className="game-main-box">
       <div className="header-box">
+        <div>
+          <span>{Math.floor(timerState / 1000 /60)}:</span>
+          <span>{Math.floor(timerState / 1000 % 60)}</span>
+        </div>
         <span>#{countTask}</span>
 
         <button className="header-btn" onClick={goBack}>

@@ -1,22 +1,18 @@
 import { useState } from "react";
 import "../styles/SetingsGame.css";
 import { Game } from "../game";
-declare global {
-  interface Window {
-    game: Game;
-  }
-}
 
-window.game = new Game();
 
 export default function SetingsGame() {
   const [complexity, setComplexity] = useState(window.game.difficulty);
   const [isChangeDifficulty, setIsChangeDifficulty] = useState(false);
+  const [timerState, setTimerState] = useState(window.game.timer)
 
   function changeDifficulty() {
     window.game.setDifficulty(complexity);
     setIsChangeDifficulty(false);
   }
+
 
   return (
     <div className="setings-main-box">
@@ -69,6 +65,10 @@ export default function SetingsGame() {
             Сохранить
           </button>
         )}
+      </div>
+
+      <div className="setings-timer-box">
+        <span>{`Время: ${Math.round((timerState / 1000 ) / 60)}`}</span>
       </div>
     </div>
   );
