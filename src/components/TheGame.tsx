@@ -107,16 +107,36 @@ export default function TheGame() {
     }
   }
 
-  function focusForward(event: React.MouseEvent<Element, MouseEvent>) {
-    event.preventDefault()
-    const selectedElIdx = Array.from(exampleElements.current?.children!).indexOf(document.activeElement!)
-    if(selectedElIdx === -1){
-      Array.from(exampleElements.current?.children!)[0].focus()
-    }
-    const selectedInputIdx = Array.from(exampleElements.current?.children!).indexOf(document.activeElement)
+  function focusBack() {
+    const selectedElIdx = Array.from(
+      exampleElements.current?.children!
+    ).indexOf(document.activeElement!);
+    const arrEl = Array.from(exampleElements.current?.children!) as (
+      | HTMLInputElement
+      | HTMLSpanElement
+    )[];
 
-    console.log(exampleElements)
-   
+    if (selectedElIdx === -1 || selectedElIdx === 0) {
+      arrEl[arrEl.length - 1].focus();
+    } else {
+      arrEl[selectedElIdx - 2].focus();
+    }
+  }
+
+  function focusForward() {
+    let selectedElIdx = Array.from(exampleElements.current?.children!).indexOf(
+      document.activeElement!
+    );
+    const arrEl = Array.from(exampleElements.current?.children!) as (
+      | HTMLInputElement
+      | HTMLSpanElement
+    )[];
+
+    if (selectedElIdx === arrEl.length - 1 || selectedElIdx === -1) {
+      arrEl[0].focus();
+    } else {
+      arrEl[selectedElIdx + 2].focus();
+    }
   }
 
   return (
@@ -140,7 +160,7 @@ export default function TheGame() {
               if (typeof val === "number") {
                 if (idx === 0) {
                   return (
-                    <input type="number" className="example-input" autoFocus/>
+                    <input type="number" className="example-input" autoFocus />
                   );
                 }
                 return <input type="number" className="example-input" />;
@@ -150,8 +170,6 @@ export default function TheGame() {
                 return <span className="example-sign">{val}</span>;
               }
             })}
-
-
           </div>
 
           <div className="example-result-box">
@@ -196,8 +214,14 @@ export default function TheGame() {
         </div>
         <div className="onscreen-keyboard-btn-box">
           <button>0</button>
-          <button>←</button>
-          <button onClick={(e) => {focusForward(e)}} autoFocus={false}>
+          <button onMouseDown={(e) => e.preventDefault()} onClick={focusBack}>
+            ←
+          </button>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={focusForward}
+            autoFocus={false}
+          >
             →
           </button>
           <button>Х</button>
