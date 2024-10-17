@@ -144,6 +144,11 @@ export default function TheGame() {
     selectedInput.value += String(numb);
   }
 
+  function deleteFromInput(){
+    const selectedInput = document.activeElement as HTMLInputElement;
+    selectedInput.value = ""
+  }
+
   return (
     <div className="game-main-box">
       <div className="header-box">
@@ -279,7 +284,7 @@ export default function TheGame() {
           >
             →
           </button>
-          <button>Х</button>
+          <button onMouseDown={(e) => e.preventDefault()} onClick={deleteFromInput}>Х</button>
         </div>
       </div>
     </div>
