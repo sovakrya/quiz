@@ -9,6 +9,7 @@
 .header-box {
     display: flex;
     justify-content: space-between;
+    font-size: 18px;
 }
 
 .header-btn {
@@ -57,4 +58,11 @@
     display: flex;
     gap: 4px;
     width: 50px;
+}
+
+.onscreen-keyboard-btn {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
 }

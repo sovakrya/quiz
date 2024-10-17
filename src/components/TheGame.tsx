@@ -79,7 +79,7 @@ export default function TheGame() {
 
     currentExample.map((val) => {
       if (val instanceof HTMLInputElement) {
-        return val.value = "";
+        return (val.value = "");
       }
     });
 
@@ -209,18 +209,21 @@ export default function TheGame() {
       <div className="onscreen-keyboard-box">
         <div className="onscreen-keyboard-btn-box">
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(7)}
             onMouseDown={(e) => e.preventDefault()}
           >
             7
           </button>
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(8)}
             onMouseDown={(e) => e.preventDefault()}
           >
             8
           </button>
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(9)}
             onMouseDown={(e) => e.preventDefault()}
           >
@@ -229,18 +232,21 @@ export default function TheGame() {
         </div>
         <div className="onscreen-keyboard-btn-box">
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(4)}
             onMouseDown={(e) => e.preventDefault()}
           >
             4
           </button>
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(5)}
             onMouseDown={(e) => e.preventDefault()}
           >
             5
           </button>
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(6)}
             onMouseDown={(e) => e.preventDefault()}
           >
@@ -249,18 +255,21 @@ export default function TheGame() {
         </div>
         <div className="onscreen-keyboard-btn-box">
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(1)}
             onMouseDown={(e) => e.preventDefault()}
           >
             1
           </button>
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(2)}
             onMouseDown={(e) => e.preventDefault()}
           >
             2
           </button>
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(3)}
             onMouseDown={(e) => e.preventDefault()}
           >
@@ -269,15 +278,21 @@ export default function TheGame() {
         </div>
         <div className="onscreen-keyboard-btn-box">
           <button
+            className="onscreen-keyboard-btn"
             onClick={() => writeToInput(0)}
             onMouseDown={(e) => e.preventDefault()}
           >
             0
           </button>
-          <button onMouseDown={(e) => e.preventDefault()} onClick={focusBack}>
+          <button
+            className="onscreen-keyboard-btn"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={focusBack}
+          >
             ←
           </button>
           <button
+            className="onscreen-keyboard-btn"
             onMouseDown={(e) => e.preventDefault()}
             onClick={focusForward}
             autoFocus={false}
@@ -285,6 +300,7 @@ export default function TheGame() {
             →
           </button>
           <button
+            className="onscreen-keyboard-btn"
             onMouseDown={(e) => e.preventDefault()}
             onClick={deleteFromInput}
           >
