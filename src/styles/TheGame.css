@@ -1,0 +1,68 @@
+.game-main-box {
+    display: flex;
+    flex-direction: column;
+    gap: 224px;
+    padding: 0px 48px;
+    height: 800px;
+}
+
+.header-box {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+}
+
+.header-btn {
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+.game-content-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.example-box {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.example-wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.example-input {
+    width: 60px;
+    height: 24px;
+}
+
+.example-sign {
+    font-size: 18px;
+}
+
+.example-result-box {
+    display: flex;
+    gap: 6px;
+}
+
+.timer-box {
+    display: flex;
+    gap: 4px;
+    width: 50px;
+}
+
+.onscreen-keyboard-btn {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+}
