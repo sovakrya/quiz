@@ -139,6 +139,11 @@ export default function TheGame() {
     }
   }
 
+  function writeToInput(numb: number) {
+    const selectedInput = document.activeElement as HTMLInputElement;
+    selectedInput.value += String(numb);
+  }
+
   return (
     <div className="game-main-box">
       <div className="header-box">
@@ -198,22 +203,72 @@ export default function TheGame() {
 
       <div className="onscreen-keyboard-box">
         <div className="onscreen-keyboard-btn-box">
-          <button>7</button>
-          <button>8</button>
-          <button>9</button>
+          <button
+            onClick={() => writeToInput(7)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            7
+          </button>
+          <button
+            onClick={() => writeToInput(8)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            8
+          </button>
+          <button
+            onClick={() => writeToInput(9)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            9
+          </button>
         </div>
         <div className="onscreen-keyboard-btn-box">
-          <button>4</button>
-          <button>5</button>
-          <button>6</button>
+          <button
+            onClick={() => writeToInput(4)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            4
+          </button>
+          <button
+            onClick={() => writeToInput(5)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            5
+          </button>
+          <button
+            onClick={() => writeToInput(6)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            6
+          </button>
         </div>
         <div className="onscreen-keyboard-btn-box">
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
+          <button
+            onClick={() => writeToInput(1)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            1
+          </button>
+          <button
+            onClick={() => writeToInput(2)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            2
+          </button>
+          <button
+            onClick={() => writeToInput(3)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            3
+          </button>
         </div>
         <div className="onscreen-keyboard-btn-box">
-          <button>0</button>
+          <button
+            onClick={() => writeToInput(0)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            0
+          </button>
           <button onMouseDown={(e) => e.preventDefault()} onClick={focusBack}>
             ←
           </button>
