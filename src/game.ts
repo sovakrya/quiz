@@ -1,18 +1,19 @@
-
-
 export class Game {
   gameStorage = window.localStorage;
   operators: ("+" | "-" | "*" | "/" | "**")[] = ["+", "-"];
   difficulty: number;
   currentTask: number;
   date: null | string;
-  timer = 3600000
-
+  timer: number;
+  example: ("+" | "-" | "*" | "/" | "**" | number)[];
 
   constructor() {
     const storageDifficulty = this.gameStorage.getItem("difficulty");
     const storageCurrentTask = this.gameStorage.getItem("currentTask");
     const storageDate = this.gameStorage.getItem("date");
+    const storageTimer = this.gameStorage.getItem("time");
+    const storageExample = this.gameStorage.getItem("example");
+    const storageOperators = this.gameStorage.getItem("operators");
 
     if (storageDifficulty) {
       try {
@@ -42,6 +43,36 @@ export class Game {
       }
     } else {
       this.date = null;
+    }
+
+    if (storageTimer) {
+      try {
+        this.timer = JSON.parse(storageTimer);
+      } catch {
+        this.timer = 3600000;
+      }
+    } else {
+      this.timer = 3600000;
+    }
+
+    if (storageExample) {
+      try {
+        this.example = JSON.parse(storageExample);
+      } catch {
+        this.example = this.createExample();
+      }
+    } else {
+      this.example = this.createExample();
+    }
+
+    if (storageOperators) {
+      try {
+        this.operators.push(JSON.parse(storageOperators));
+      } catch {
+        this.operators = ["+", "-"];
+      }
+    } else {
+      this.operators = ["+", "-"];
     }
   }
 
@@ -76,6 +107,8 @@ export class Game {
       }
     }
 
+    this.gameStorage.setItem("example", JSON.stringify(example));
+    console.log(example);
     return example;
   }
 
@@ -88,6 +121,9 @@ export class Game {
   }
 
   addOperator(operator: "+" | "-" | "*" | "/" | "**") {
+    if (this.operators.includes(operator)) {
+      return;
+    }
     this.operators.push(operator);
     this.gameStorage.setItem("operators", JSON.stringify(operator));
     alert(`added operator: ${operator}`);
@@ -122,11 +158,11 @@ export class Game {
     this.operators = ["+", "-"];
     this.difficulty = 2;
     this.currentTask = 0;
-    this.timer = 3600000
+    this.timer = 3600000;
     this.gameStorage.setItem("operators", JSON.stringify(this.operators));
     this.gameStorage.setItem("difficulty", JSON.stringify(this.difficulty));
     this.gameStorage.setItem("currentTask", JSON.stringify(this.currentTask));
-    this.gameStorage.setItem("time", JSON.stringify(this.timer))
+    this.gameStorage.setItem("time", JSON.stringify(this.timer));
   }
 }
 

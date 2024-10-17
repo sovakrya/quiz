@@ -11,7 +11,7 @@ declare global {
 
 window.game = new Game();
 
-let example = window.game.createExample();
+let example = window.game.example;
 let result = window.game.countExample(example);
 
 export default function TheGame() {
@@ -77,9 +77,9 @@ export default function TheGame() {
       setExampleCorrect(false);
     }
 
-    currentExample.forEach((val) => {
+    currentExample.map((val) => {
       if (val instanceof HTMLInputElement) {
-        val.value = "";
+        return val.value = "";
       }
     });
 
@@ -144,9 +144,9 @@ export default function TheGame() {
     selectedInput.value += String(numb);
   }
 
-  function deleteFromInput(){
+  function deleteFromInput() {
     const selectedInput = document.activeElement as HTMLInputElement;
-    selectedInput.value = ""
+    selectedInput.value = "";
   }
 
   return (
@@ -284,7 +284,12 @@ export default function TheGame() {
           >
             →
           </button>
-          <button onMouseDown={(e) => e.preventDefault()} onClick={deleteFromInput}>Х</button>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={deleteFromInput}
+          >
+            Х
+          </button>
         </div>
       </div>
     </div>
